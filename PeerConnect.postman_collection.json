@@ -1,0 +1,1378 @@
+{
+	"info": {
+		"_postman_id": "e7f481d0-a37c-4e4e-a564-fdc4d4b082fb",
+		"name": "PeerConnect",
+		"description": "PeerConnect API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e197cea-c83b-4732-a119-f98151cd3330",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"",
+									"pm.environment.set(\"ACCESS_TOKEN\", jsonData.access_token);",
+									"pm.environment.set(\"REFRESH_TOKEN\", jsonData.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "ke.admin@dps.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "ke-admin",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "oauth-admin-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "oauth-admin-password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						},
+						"description": "Get Access Token from API"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e197cea-c83b-4732-a119-f98151cd3330",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);",
+									"",
+									"pm.environment.set(\"ACCESS_TOKEN\", jsonData.access_token);",
+									"pm.environment.set(\"REFRESH_TOKEN\", jsonData.refresh_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{REFRESH_TOKEN}}",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "oauth-admin-client",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "oauth-admin-password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						},
+						"description": "Get a new Access Token from API using Refresh Token"
+					},
+					"response": []
+				}
+			],
+			"description": "Authorization Requests",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fa5e3874-aed1-4e31-989e-2a6872edad3b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/oauth/token');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a04eb4a-1d28-4919-8427-c8fb2017eedd",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=67d8a2e6-b85f-4e0b-8036-be60a27d38ec",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "67d8a2e6-b85f-4e0b-8036-be60a27d38ec"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "efe17bf1-70ce-4aa4-a751-17e3c3706b95",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/admins');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "419c6936-9485-446a-adbf-d6e86fbc6049",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Programs",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=a5562455-8eed-47e7-8e6b-fdaeeb13e504",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "a5562455-8eed-47e7-8e6b-fdaeeb13e504"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Program Name\",\n\t\"startDate\": \"2018-12-25T00:00:00Z\",\n\t\"endDate\": \"2019-01-05T23:59:59Z\",\n\t\"appointmentDuration\": 30,\n\t\"maxParticipantAppts\": 3,\n\t\"maxCaptainAppts\": 30,\n\t\"supportEmail\": \"noreply@example.org\",\n\t\"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Program Name [Edited]\",\n\t\"startDate\": \"2018-12-27T00:00:00Z\",\n\t\"endDate\": \"2019-01-10T11:59:59Z\",\n\t\"appointmentDuration\": 30,\n\t\"maxParticipantAppts\": 5,\n\t\"maxCaptainAppts\": 25,\n\t\"supportEmail\": \"no-reply@sample.org\",\n\t\"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=a5562455-8eed-47e7-8e6b-fdaeeb13e504",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "a5562455-8eed-47e7-8e6b-fdaeeb13e504"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d13d268a-6dc9-4d11-9926-eb4537cd3155",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/programs');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a74277f5-5b2e-4fbd-87d8-8dd561709d96",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "SupportTopics",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=1f3f9f83-d236-4a63-98d8-23ff80f8006e",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1f3f9f83-d236-4a63-98d8-23ff80f8006e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"How to do something\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"How to do something ... else\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=1f3f9f83-d236-4a63-98d8-23ff80f8006e",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1f3f9f83-d236-4a63-98d8-23ff80f8006e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4946fbfc-5dd5-48d4-adc8-1dbe039f726b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/supportTopics');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "566ad9dc-e868-493b-bf3d-019e1df61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "TimeZones",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=4d21eaee-f6ea-43f4-a5e6-f6a34662c598",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4d21eaee-f6ea-43f4-a5e6-f6a34662c598"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"Pacific Time\",\n\t\"utcOffset\": 8,\n\t\"dstOffset\": 7\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"label\": \"Universal Time Coordinated\",\n\t\"utcOffset\": 0,\n\t\"dstOffset\": 0\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=4d21eaee-f6ea-43f4-a5e6-f6a34662c598",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4d21eaee-f6ea-43f4-a5e6-f6a34662c598"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4946fbfc-5dd5-48d4-adc8-1dbe039f726b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/timeZones');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "566ad9dc-e868-493b-bf3d-019e1df61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Topics",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=5da73feb-ed83-4ef2-8bab-38c7e2037800",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5da73feb-ed83-4ef2-8bab-38c7e2037800"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Coffee Addiction\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Serious Coffee Addiction!\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=5da73feb-ed83-4ef2-8bab-38c7e2037800",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5da73feb-ed83-4ef2-8bab-38c7e2037800"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4946fbfc-5dd5-48d4-adc8-1dbe039f726b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/topics');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "566ad9dc-e868-493b-bf3d-019e1df61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=05b639b7-d84c-4603-9234-e72c95b5ef83",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "05b639b7-d84c-4603-9234-e72c95b5ef83"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"20+ Harmful Effects of Caffeine\",\n\t\"description\": \"If you are experiencing any tell-tale signs of the risks above, then it’s time to start cutting back. Otherwise, it’s just a matter of time.\",\n\t\"contentType\": 7,\n\t\"absoluteUrl\": \"https://www.caffeineinformer.com/harmful-effects-of-caffeine\",\n\t\"thumbnailUrl\": \"https://cdn.caffeineinformer.com/wp-content/uploads/harmful-caffeine-effects.jpg\",\n\t\"folderId\": \"dfc256f6-bc4e-4137-b873-c0aaf0dda6fa\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Serious Coffee Addiction!\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=5da73feb-ed83-4ef2-8bab-38c7e2037800",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5da73feb-ed83-4ef2-8bab-38c7e2037800"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4946fbfc-5dd5-48d4-adc8-1dbe039f726b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/resources');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "566ad9dc-e868-493b-bf3d-019e1df61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "ResourceFolders",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOne",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=dfc256f6-bc4e-4137-b873-c0aaf0dda6fa",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "dfc256f6-bc4e-4137-b873-c0aaf0dda6fa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Addictions\",\n\t\"isRestricted\": true\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}",
+							"host": [
+								"{{apiEndPoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Tenant-ID",
+								"type": "text",
+								"value": "3723137b-9674-4892-a883-c3eefd67d367"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Serious Coffee Addiction!\"\n}"
+						},
+						"url": {
+							"raw": "{{apiEndPoint}}?id=5da73feb-ed83-4ef2-8bab-38c7e2037800",
+							"host": [
+								"{{apiEndPoint}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5da73feb-ed83-4ef2-8bab-38c7e2037800"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4946fbfc-5dd5-48d4-adc8-1dbe039f726b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set('apiEndPoint', pm.environment.get('apiUrl') + '/resourceFolders');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "566ad9dc-e868-493b-bf3d-019e1df61053",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
